@@ -11,3 +11,33 @@ beforeEach(() => {
 afterAll(() => {
   connection.end();
 });
+
+describe("/api/notARoute", () => {
+  test("GET 404", () => {
+    return request(app)
+      .get("/api/notARoute")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Route not found");
+      });
+  });
+});
+
+describe("/api", () => {
+  test("GET 200: Responds with all endpoints", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({ body }) => {
+        const allEndpoints = body.endpoints;
+        for (key in allEndpoints) {
+          expect(allEndpoints[key]).toMatchObject({
+            description: expect.any(String),
+            queries: expect.any(Array),
+            reqBodyFormat: expect.any(Object),
+            exampleResponse: expect.any(Object),
+          });
+        }
+      });
+  });
+});
