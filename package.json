@@ -1,0 +1,24 @@
+{
+  "name": "simchas-board-be",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "setup-dbs": "psql -f ./db/setup.sql",
+    "seed": "node ./db/seeds/run-seed.js",
+    "test": "jest",
+    "start": "node listen.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "supertest": "^7.0.0",
+    "pg-format": "^1.0.4"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "dotenv": "^16.0.0",
+    "pg": "^8.7.3"
+  }
+}
