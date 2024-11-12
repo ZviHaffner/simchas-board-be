@@ -23,8 +23,6 @@ exports.fetchSimchasByTypeWithHost = (simcha_type) => {
       [simcha_type]
     )
     .then(({ rows }) => {
-      console.log(rows);
-      
       const simchas = rows;
       if (!simchas.length) {
         return Promise.reject({
