@@ -29,7 +29,7 @@ const seed = ({ eventsData, sigPersonsData, simchasData, usersData }) => {
       CREATE TABLE simchas (
         id SERIAL PRIMARY KEY,
         user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-        type_of_simcha VARCHAR(255) NOT NULL,
+        simcha_type VARCHAR(255) NOT NULL,
         notes TEXT
       );`);
     })
@@ -89,10 +89,10 @@ const seed = ({ eventsData, sigPersonsData, simchasData, usersData }) => {
     })
     .then(() => {
       const insertSimchasQueryStr = format(
-        "INSERT INTO simchas (user_id, type_of_simcha, notes) VALUES %L RETURNING *;",
-        simchasData.map(({ user_id, type_of_simcha, notes }) => [
+        "INSERT INTO simchas (user_id, simcha_type, notes) VALUES %L RETURNING *;",
+        simchasData.map(({ user_id, simcha_type, notes }) => [
           user_id,
-          type_of_simcha,
+          simcha_type,
           notes,
         ])
       );
