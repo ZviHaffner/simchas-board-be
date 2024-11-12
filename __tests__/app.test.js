@@ -43,7 +43,7 @@ describe("/api", () => {
 });
 
 describe("/simchas/:simcha_type", () => {
-  test("GET 200: Responds with all simchas for correct simcha type with host information added", () => {
+  test("GET 200: Responds with all simchas for correct simcha type (shalom-zachor) with host information added", () => {
     return request(app)
       .get("/api/simchas/shalom-zachor")
       .expect(200)
@@ -54,6 +54,25 @@ describe("/simchas/:simcha_type", () => {
             id: expect.any(Number),
             user_id: expect.any(Number),
             simcha_type: "shalom-zachor",
+            title: expect.any(String),
+            first_name: expect.any(String),
+            surname: expect.any(String),
+            tribe: expect.any(String),
+          });
+        });
+      });
+  });
+  test("GET 200: Responds with all simchas for correct simcha type (bris) with host information added", () => {
+    return request(app)
+      .get("/api/simchas/bris")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.simchas.length).toBe(2);
+        body.simchas.forEach((simcha) => {
+          expect(simcha).toEqual({
+            id: expect.any(Number),
+            user_id: expect.any(Number),
+            simcha_type: "bris",
             title: expect.any(String),
             first_name: expect.any(String),
             surname: expect.any(String),
