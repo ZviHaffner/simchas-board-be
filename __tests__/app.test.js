@@ -42,7 +42,7 @@ describe("/api", () => {
   });
 });
 
-describe.only("/simchas/:simcha_type", () => {
+describe("/simchas/:simcha_type", () => {
   test("GET 200: Responds with all simchas for correct simcha type with host information added", () => {
     return request(app)
       .get("/api/simchas/shalom-zachor")
