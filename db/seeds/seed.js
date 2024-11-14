@@ -132,25 +132,9 @@ const seed = ({ eventsData, sigPersonsData, simchasData, usersData }) => {
       return db.query(insertSigPersonsQueryStr);
     })
     .then(() => {
-      const formattedEventsData = eventsData.map((eventObj) => {
-        const eventObjCopy = { ...eventObj };
-
-        if (eventObjCopy.date_and_time) {
-          eventObjCopy.date_and_time = new Date(
-            eventObjCopy.date_and_time
-          ).toISOString();
-        }
-
-        if (eventObjCopy.end_time) {
-          eventObjCopy.end_time = new Date(eventObjCopy.end_time).toISOString();
-        }
-
-        return eventObjCopy;
-      });
-
       const insertEventsQueryStr = format(
         "INSERT INTO events (simcha_id, title, date_and_time, end_time, location_name, address_first_line, area, city_of_event, country_of_event, men_only) VALUES %L RETURNING *;",
-        formattedEventsData.map(
+        eventsData.map(
           ({
             simcha_id,
             title,
