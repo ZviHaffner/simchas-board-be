@@ -1,8 +1,8 @@
 const simchasRouter = require("express").Router();
 const {
-  getSimchasByTypeWithHost,
+  getSimchasByTypeWithHostAndDate,
 } = require("../controllers/simchas.controllers");
 
-simchasRouter.route("/:simcha_type").get(getSimchasByTypeWithHost);
+simchasRouter.route("/:simcha_type").get(getSimchasByTypeWithHostAndDate);
 
 module.exports = simchasRouter;

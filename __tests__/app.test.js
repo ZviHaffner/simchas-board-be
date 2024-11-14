@@ -43,50 +43,98 @@ describe("/api", () => {
 });
 
 describe("/simchas/:simcha_type", () => {
-  test("GET 200: Responds with all simchas for correct simcha type (shalom-zachor) with host information added", () => {
-    return request(app)
-      .get("/api/simchas/shalom-zachor")
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.simchas.length).toBe(2);
-        body.simchas.forEach((simcha) => {
-          expect(simcha).toEqual({
-            id: expect.any(Number),
-            user_id: expect.any(Number),
-            simcha_type: "shalom-zachor",
-            title: expect.any(String),
-            first_name: expect.any(String),
-            surname: expect.any(String),
-            tribe: expect.any(String),
+  const simchaTypes = ["shalom-zachor", "bris"];
+
+  simchaTypes.forEach((simchaType) => {
+    test(`GET 200: Responds with all simchas for correct simcha type (${simchaType})`, () => {
+      return request(app)
+        .get(
+          `/api/simchas/${simchaType}?start_date=1971-01-01&end_date=2100-01-01`
+        )
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.simchas.length).toBe(2);
+          body.simchas.forEach((simcha) => {
+            expect(simcha).toMatchObject({
+              id: expect.any(Number),
+              user_id: expect.any(Number),
+              simcha_type: simchaType,
+            });
           });
         });
-      });
+    });
+    test("GET 200: Adds host information to response", () => {
+      return request(app)
+        .get(
+          `/api/simchas/${simchaType}?start_date=1971-01-01&end_date=2100-01-01`
+        )
+        .expect(200)
+        .then(({ body }) => {
+          body.simchas.forEach((simcha) => {
+            expect(simcha).toMatchObject({
+              title: expect.any(String),
+              first_name: expect.any(String),
+              surname: expect.any(String),
+              tribe: expect.any(String),
+            });
+          });
+        });
+    });
+    test("GET 200: Adds date and time to response", () => {
+      return request(app)
+        .get(
+          `/api/simchas/${simchaType}?start_date=1971-01-01&end_date=2100-01-01`
+        )
+        .expect(200)
+        .then(({ body }) => {
+          body.simchas.forEach((simcha) => {
+            expect(simcha).toMatchObject({
+              date_and_time: expect.any(String),
+            });
+          });
+        });
+    });
   });
-  test("GET 200: Responds with all simchas for correct simcha type (bris) with host information added", () => {
+  test("GET 200: Responds with correct data between a specified date range", () => {
     return request(app)
-      .get("/api/simchas/bris")
+      .get("/api/simchas/bar-mitzvah?start_date=2025-01-15&end_date=2025-01-22")
       .expect(200)
       .then(({ body }) => {
-        expect(body.simchas.length).toBe(2);
+        expect(body.simchas.length).toBe(1);
         body.simchas.forEach((simcha) => {
-          expect(simcha).toEqual({
-            id: expect.any(Number),
+          expect(simcha).toMatchObject({
+            id: 8,
             user_id: expect.any(Number),
-            simcha_type: "bris",
+            simcha_type: "bar-mitzvah",
             title: expect.any(String),
             first_name: expect.any(String),
             surname: expect.any(String),
             tribe: expect.any(String),
+            date_and_time: expect.any(String),
           });
         });
       });
   });
   test("GET 404: Responds with error when passed a non-existent simcha type", () => {
     return request(app)
-      .get("/api/simchas/not-a-simcha")
+      .get(
+        "/api/simchas/not-a-simcha?start_date=1971-01-01&end_date=2100-01-01"
+      )
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toEqual("No simchas found for simcha_type: not-a-simcha");
+        expect(body.msg).toEqual(
+          "No simchas found for simcha_type: not-a-simcha"
+        );
+      });
+  });
+  test("GET 400: Responds with error when passed a non valid date query", () => {
+    return request(app)
+      .get(
+        "/api/simchas/bar-mitzvah?start_date=SQLInjection&end_date=SQLInjection"
+      )
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
       });
   });
 });
