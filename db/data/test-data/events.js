@@ -1,11 +1,10 @@
 module.exports = [
   // Shalom Zachor 1
   {
-    id: 1,
     simcha_id: 1,
     title: "Shalom Zachor",
-    date_and_time: 1730102400,
-    end_time: 1730116800,
+    date_and_time: "2024-10-11T19:00:00Z",
+    end_time: "2024-10-12T01:00:00Z",
     location_name: "At Home",
     address_first_line: "123 Oak Road",
     area: "Salford",
@@ -16,11 +15,10 @@ module.exports = [
 
   // Shalom Zachor 2
   {
-    id: 2,
     simcha_id: 2,
     title: "Shalom Zachor",
-    date_and_time: 1730188800,
-    end_time: 1730203200,
+    date_and_time: "2024-11-29T20:00:00Z",
+    end_time: "2024-11-29T01:00:00Z",
     location_name: "Yeshiva Hall",
     address_first_line: "456 Elm Street",
     area: "Manchester",
@@ -31,11 +29,10 @@ module.exports = [
 
   // Simchas Holedes HaBas 1
   {
-    id: 3,
     simcha_id: 3,
     title: "Kiddush",
-    date_and_time: 1730191200,
-    end_time: 1730198400,
+    date_and_time: "2024-12-07T10:30:00Z",
+    end_time: "2024-12-07T13:30:00Z",
     location_name: "Shul Hall",
     address_first_line: "789 Maple Lane",
     area: "Manchester",
@@ -46,11 +43,10 @@ module.exports = [
 
   // Simchas Holedes HaBas 2
   {
-    id: 4,
     simcha_id: 4,
     title: "Kiddush",
-    date_and_time: 1730277600,
-    end_time: 1730284800,
+    date_and_time: "2025-02-15T11:00:00Z",
+    end_time: "2025-02-15T13:00:00Z",
     location_name: "At Home",
     address_first_line: "101 Birch Avenue",
     area: "Salford",
@@ -61,11 +57,10 @@ module.exports = [
 
   // Bris 1
   {
-    id: 5,
     simcha_id: 5,
     title: "Bris",
-    date_and_time: 1730281200,
-    end_time: 1730292000,
+    date_and_time: "2025-01-12T07:30:00Z",
+    end_time: null,
     location_name: "Shul Name",
     address_first_line: "102 Cedar Street",
     area: "Manchester",
@@ -76,11 +71,10 @@ module.exports = [
 
   // Bris 2
   {
-    id: 6,
     simcha_id: 6,
     title: "Bris",
-    date_and_time: 1730367600,
-    end_time: 1730374800,
+    date_and_time: "2024-11-05T08:00:00Z",
+    end_time: null,
     location_name: "Yeshiva Hall",
     address_first_line: "103 Pine Road",
     area: "Prestwich",
@@ -91,11 +85,10 @@ module.exports = [
 
   // Bar Mitzvah 1
   {
-    id: 7,
     simcha_id: 7,
     title: "Aliyah LeTorah",
-    date_and_time: 1730374800,
-    end_time: 1730382000,
+    date_and_time: "2024-11-23T11:15:00Z",
+    end_time: null,
     location_name: "Shul Name",
     address_first_line: "104 Oak Avenue",
     area: "Salford",
@@ -104,11 +97,10 @@ module.exports = [
     men_only: false,
   },
   {
-    id: 8,
     simcha_id: 7,
     title: "Kiddush",
-    date_and_time: 1730385600,
-    end_time: 1730392800,
+    date_and_time: "2024-11-23T12:00:00Z",
+    end_time: "2024-11-23T14:15:00Z",
     location_name: "Shul Hall",
     address_first_line: "104 Oak Avenue",
     area: "Salford",
@@ -119,11 +111,10 @@ module.exports = [
 
   // Bar Mitzvah 2
   {
-    id: 9,
     simcha_id: 8,
     title: "Aliyah LeTorah",
-    date_and_time: 1730461200,
-    end_time: 1730468400,
+    date_and_time: "2025-01-18T10:15:00Z",
+    end_time: null,
     location_name: "Shul Name",
     address_first_line: "105 Elm Road",
     area: "Manchester",
@@ -132,11 +123,10 @@ module.exports = [
     men_only: false,
   },
   {
-    id: 10,
     simcha_id: 8,
     title: "Kiddush",
-    date_and_time: 1730472000,
-    end_time: 1730479200,
+    date_and_time: "2025-01-18T11:15:00Z",
+    end_time: "2025-01-18T13:30:00Z",
     location_name: "Shul Hall",
     address_first_line: "105 Elm Road",
     area: "Manchester",
@@ -147,11 +137,10 @@ module.exports = [
 
   // Aufruf 1
   {
-    id: 11,
     simcha_id: 9,
     title: "Aliyah LeTorah",
-    date_and_time: 1730467200,
-    end_time: 1730474400,
+    date_and_time: "2024-12-07T09:45:00Z",
+    end_time: null,
     location_name: "Shul Name",
     address_first_line: "106 Maple Street",
     area: "Salford",
@@ -160,11 +149,10 @@ module.exports = [
     men_only: true,
   },
   {
-    id: 12,
     simcha_id: 9,
     title: "Kiddush",
-    date_and_time: 1730478000,
-    end_time: 1730485200,
+    date_and_time: "2024-12-07T11:45:00Z",
+    end_time: "2024-12-07T13:45:00Z",
     location_name: "Shul Hall",
     address_first_line: "106 Maple Street",
     area: "Salford",
@@ -175,11 +163,10 @@ module.exports = [
 
   // Aufruf 2
   {
-    id: 13,
     simcha_id: 10,
     title: "Aliyah LeTorah",
-    date_and_time: 1730553600,
-    end_time: 1730560800,
+    date_and_time: "2025-02-22T10:30:00Z",
+    end_time: null,
     location_name: "Shul Name",
     address_first_line: "107 Pine Lane",
     area: "Prestwich",
@@ -188,11 +175,10 @@ module.exports = [
     men_only: true,
   },
   {
-    id: 14,
     simcha_id: 10,
     title: "Kiddush",
-    date_and_time: 1730564400,
-    end_time: 1730571600,
+    date_and_time: "2025-02-22T11:30:00Z",
+    end_time: "2025-02-22T14:30:00Z",
     location_name: "Shul Hall",
     address_first_line: "107 Pine Lane",
     area: "Prestwich",
@@ -203,11 +189,10 @@ module.exports = [
 
   // Shidduch 1
   {
-    id: 15,
     simcha_id: 11,
     title: "Lechaim",
-    date_and_time: 1730304000,
-    end_time: 1730311200,
+    date_and_time: "2024-11-18T18:15:00Z",
+    end_time: "2024-11-18T20:15:00Z",
     location_name: "Home",
     address_first_line: "108 Cedar Avenue",
     area: "Salford",
@@ -216,11 +201,10 @@ module.exports = [
     men_only: false,
   },
   {
-    id: 16,
     simcha_id: 11,
     title: "Engagement Party",
-    date_and_time: 1730390400,
-    end_time: 1730397600,
+    date_and_time: "2024-11-23T17:15:00Z",
+    end_time: "2024-11-23T22:15:00Z",
     location_name: "Shul Hall",
     address_first_line: "108 Cedar Avenue",
     area: "Salford",
@@ -231,11 +215,10 @@ module.exports = [
 
   // Shidduch 2
   {
-    id: 17,
     simcha_id: 12,
     title: "Lechaim",
-    date_and_time: 1730397600,
-    end_time: 1730404800,
+    date_and_time: "2024-10-21T18:00:00Z",
+    end_time: "2024-10-21T20:00:00Z",
     location_name: "Home",
     address_first_line: "109 Birch Street",
     area: "Manchester",
@@ -244,11 +227,10 @@ module.exports = [
     men_only: false,
   },
   {
-    id: 18,
     simcha_id: 12,
     title: "Engagement Party",
-    date_and_time: 1730484000,
-    end_time: 1730491200,
+    date_and_time: "2024-10-25T17:00:00Z",
+    end_time: "2024-10-25T10:00:00Z",
     location_name: "Shul Hall",
     address_first_line: "109 Birch Street",
     area: "Manchester",
@@ -259,11 +241,10 @@ module.exports = [
 
   // Wedding 1
   {
-    id: 19,
     simcha_id: 13,
     title: "Chuppah",
-    date_and_time: 1730656800,
-    end_time: 1730664000,
+    date_and_time: "2024-12-17T15:00:00Z",
+    end_time: null,
     location_name: "Wedding Hall",
     address_first_line: "110 Oak Drive",
     area: "Prestwich",
@@ -272,11 +253,10 @@ module.exports = [
     men_only: false,
   },
   {
-    id: 20,
     simcha_id: 13,
     title: "Simchas Chassan VeKallah",
-    date_and_time: 1730671200,
-    end_time: 1730685600,
+    date_and_time: "2024-12-17T22:00:00Z",
+    end_time: null,
     location_name: "Wedding Hall",
     address_first_line: "110 Oak Drive",
     area: "Prestwich",
@@ -287,11 +267,10 @@ module.exports = [
 
   // Wedding 2
   {
-    id: 21,
     simcha_id: 14,
     title: "Chuppah",
-    date_and_time: 1730743200,
-    end_time: 1730750400,
+    date_and_time: "2024-12-03T15:45:00Z",
+    end_time: "2024-12-03T15:45:00Z",
     location_name: "Yeshiva Hall",
     address_first_line: "111 Elm Way",
     area: "Salford",
@@ -300,11 +279,10 @@ module.exports = [
     men_only: false,
   },
   {
-    id: 22,
     simcha_id: 14,
     title: "Simchas Chassan VeKallah",
-    date_and_time: 1730757600,
-    end_time: 1730772000,
+    date_and_time: "2024-12-03T23:00:00Z",
+    end_time: null,
     location_name: "Yeshiva Hall",
     address_first_line: "111 Elm Way",
     area: "Salford",
