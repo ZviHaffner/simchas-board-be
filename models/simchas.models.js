@@ -1,6 +1,14 @@
 const db = require("../db/connection");
 
-exports.fetchSimchasByTypeWithHostAndDate = (simcha_type, start_date, end_date) => {
+exports.fetchAllSimchas = () => {
+  return db.query("SELECT * FROM simchas");
+};
+
+exports.fetchSimchasByTypeWithHostAndDate = (
+  simcha_type,
+  start_date,
+  end_date
+) => {
   return db
     .query(
       `

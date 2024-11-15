@@ -42,6 +42,27 @@ describe("/api", () => {
   });
 });
 
+describe("/api/simchas", () => {
+  test("GET 200: Responds with all simchas", () => {
+    return request(app)
+      .get("/api/simchas")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.simchas.length).toBe(14);
+        body.simchas.forEach((simcha) => {
+          expect(simcha).toMatchObject({
+            id: expect.any(Number),
+            user_id: expect.any(Number),
+            simcha_type: expect.any(String),
+          });
+          expect(
+            typeof simcha.notes === "string" || simcha.notes === null
+          ).toBe(true);
+        });
+      });
+  });
+});
+
 describe("/simchas/:simcha_type", () => {
   const simchaTypes = ["shalom-zachor", "bris"];
 
