@@ -1,4 +1,15 @@
-const { fetchSimchasByTypeWithHostAndDate } = require("../models/simchas.models");
+const {
+  fetchSimchasByTypeWithHostAndDate,
+  fetchAllSimchas,
+} = require("../models/simchas.models");
+
+exports.getAllSimchas = (req, res, next) => {
+  fetchAllSimchas()
+    .then(({ rows }) => {
+      res.status(200).send({ simchas: rows });
+    })
+    .catch(next);
+};
 
 exports.getSimchasByTypeWithHostAndDate = (req, res, next) => {
   const { simcha_type } = req.params;
