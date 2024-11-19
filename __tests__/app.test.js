@@ -63,14 +63,14 @@ describe("/api/simchas", () => {
   });
 });
 
-describe("/simchas/:simcha_type", () => {
+describe("/api/simchas/types/:simcha_type", () => {
   const simchaTypes = ["shalom-zachor", "bris"];
 
   simchaTypes.forEach((simchaType) => {
     test(`GET 200: Responds with all simchas for correct simcha type (${simchaType})`, () => {
       return request(app)
         .get(
-          `/api/simchas/${simchaType}?start_date=1971-01-01&end_date=2100-01-01`
+          `/api/simchas/types/${simchaType}?start_date=1971-01-01&end_date=2100-01-01`
         )
         .expect(200)
         .then(({ body }) => {
@@ -87,7 +87,7 @@ describe("/simchas/:simcha_type", () => {
     test("GET 200: Adds host information to response", () => {
       return request(app)
         .get(
-          `/api/simchas/${simchaType}?start_date=1971-01-01&end_date=2100-01-01`
+          `/api/simchas/types/${simchaType}?start_date=1971-01-01&end_date=2100-01-01`
         )
         .expect(200)
         .then(({ body }) => {
@@ -104,7 +104,7 @@ describe("/simchas/:simcha_type", () => {
     test("GET 200: Adds date and time to response", () => {
       return request(app)
         .get(
-          `/api/simchas/${simchaType}?start_date=1971-01-01&end_date=2100-01-01`
+          `/api/simchas/types/${simchaType}?start_date=1971-01-01&end_date=2100-01-01`
         )
         .expect(200)
         .then(({ body }) => {
@@ -118,7 +118,7 @@ describe("/simchas/:simcha_type", () => {
   });
   test("GET 200: Responds with correct data between a specified date range", () => {
     return request(app)
-      .get("/api/simchas/bar-mitzvah?start_date=2025-01-15&end_date=2025-01-22")
+      .get("/api/simchas/types/bar-mitzvah?start_date=2025-01-15&end_date=2025-01-22")
       .expect(200)
       .then(({ body }) => {
         expect(body.simchas.length).toBe(1);
@@ -139,7 +139,7 @@ describe("/simchas/:simcha_type", () => {
   test("GET 404: Responds with error when passed a non-existent simcha type", () => {
     return request(app)
       .get(
-        "/api/simchas/not-a-simcha?start_date=1971-01-01&end_date=2100-01-01"
+        "/api/simchas/types/not-a-simcha?start_date=1971-01-01&end_date=2100-01-01"
       )
       .expect(404)
       .then(({ body }) => {
@@ -151,7 +151,7 @@ describe("/simchas/:simcha_type", () => {
   test("GET 400: Responds with error when passed a non valid date query", () => {
     return request(app)
       .get(
-        "/api/simchas/bar-mitzvah?start_date=SQLInjection&end_date=SQLInjection"
+        "/api/simchas/types/bar-mitzvah?start_date=SQLInjection&end_date=SQLInjection"
       )
       .expect(400)
       .then(({ body }) => {
