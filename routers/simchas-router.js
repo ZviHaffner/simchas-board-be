@@ -6,6 +6,6 @@ const {
 
 simchasRouter.route("/").get(getAllSimchas);
 
-simchasRouter.route("/:simcha_type").get(getSimchasByTypeWithHostAndDate);
+simchasRouter.route("/types/:simcha_type").get(getSimchasByTypeWithHostAndDate);
 
 module.exports = simchasRouter;
