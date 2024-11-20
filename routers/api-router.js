@@ -2,9 +2,11 @@ const { getAllEndpoints } = require("../controllers/api.controllers");
 const apiRouter = require("express").Router();
 
 const simchasRouter = require("./simchas-router");
+const usersRouter = require("./users-router");
 
 apiRouter.route("/").get(getAllEndpoints);
 
+apiRouter.use("/users", usersRouter);
 apiRouter.use("/simchas", simchasRouter);
 
 module.exports = apiRouter;
