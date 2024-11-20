@@ -4,6 +4,39 @@ exports.fetchAllSimchas = () => {
   return db.query("SELECT * FROM simchas");
 };
 
+exports.fetchCompleteSimchaById = (id) => {
+  return db
+    .query(
+      `
+        SELECT 
+            simchas.*, 
+            JSON_AGG(DISTINCT sig_persons.*) AS sig_persons, 
+            JSON_AGG(DISTINCT events.*) AS events
+        FROM 
+            simchas
+        JOIN 
+            sig_persons ON simchas.id = sig_persons.simcha_id
+        JOIN 
+            events ON simchas.id = events.simcha_id
+        WHERE
+            simchas.id = $1
+        GROUP BY
+            simchas.id;
+    `,
+      [id]
+    )
+    .then(({ rows }) => {
+      const simcha = rows[0];
+      if (!simcha) {
+        return Promise.reject({
+          status: 404,
+          msg: `No simcha found for id: ${id}`,
+        });
+      }
+      return simcha;
+    });
+};
+
 exports.fetchSimchasByTypeWithHostAndDate = (
   simcha_type,
   start_date,
