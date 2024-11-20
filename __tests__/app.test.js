@@ -63,6 +63,91 @@ describe("/api/simchas", () => {
   });
 });
 
+describe("/api/simchas/:id/details", () => {
+  test("GET 200: Responds with correct simcha", () => {
+    return request(app)
+      .get("/api/simchas/10/details")
+      .expect(200)
+      .then(({ body }) => {
+        const simcha = body.simcha;
+
+        expect(simcha).toMatchObject({
+          id: 10,
+          user_id: 1,
+          simcha_type: "aufruf",
+          notes: null,
+        });
+      });
+  });
+  test("GET 200: Adds on all significant persons information", () => {
+    return request(app)
+      .get("/api/simchas/10/details")
+      .expect(200)
+      .then(({ body }) => {
+        const simcha = body.simcha;
+
+        expect(Array.isArray(simcha.sig_persons)).toBe(true);
+        expect(simcha.sig_persons).toHaveLength(3);
+        simcha.sig_persons.forEach((sig_person) => {
+          expect(sig_person).toMatchObject({
+            id: expect.any(Number),
+            simcha_id: simcha.id,
+            title: expect.any(String),
+            first_name: expect.any(String),
+            surname: expect.any(String),
+            tribe: expect.any(String),
+            city_of_residence: expect.any(String),
+            country_of_residence: expect.any(String),
+            relationship_type: expect.toBeOneOf([expect.any(String), null]),
+            relation_of: expect.toBeOneOf([expect.any(String), null]),
+          });
+        });
+      });
+  });
+  test("GET 200: Adds on all events information", () => {
+    return request(app)
+      .get("/api/simchas/10/details")
+      .expect(200)
+      .then(({ body }) => {
+        const simcha = body.simcha;
+
+        expect(Array.isArray(simcha.events)).toBe(true);
+        expect(simcha.events).toHaveLength(2);
+        simcha.events.forEach((event) => {
+          expect(event).toMatchObject({
+            id: expect.any(Number),
+            simcha_id: simcha.id,
+            title: expect.any(String),
+            date_and_time: expect.any(String),
+            end_time: expect.toBeOneOf([expect.any(String), null]),
+            location_name: expect.any(String),
+            address_first_line: expect.any(String),
+            area: expect.any(String),
+            city_of_event: expect.any(String),
+            country_of_event: expect.any(String),
+            men_only: expect.any(Boolean),
+          });
+        });
+      });
+  });
+  test("GET 404: Responds with error when passed a non-existent ID", () => {
+    return request(app)
+      .get("/api/simchas/99999999/details")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("No simcha found for id: 99999999");
+      });
+  });
+  test("GET 400: Responds with error when passed an ID that is not a number", () => {
+    return request(app)
+      .get("/api/simchas/NaN/details")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+});
+
 describe("/api/simchas/types/:simcha_type", () => {
   const simchaTypes = ["shalom-zachor", "bris"];
 
@@ -118,7 +203,9 @@ describe("/api/simchas/types/:simcha_type", () => {
   });
   test("GET 200: Responds with correct data between a specified date range", () => {
     return request(app)
-      .get("/api/simchas/types/bar-mitzvah?start_date=2025-01-15&end_date=2025-01-22")
+      .get(
+        "/api/simchas/types/bar-mitzvah?start_date=2025-01-15&end_date=2025-01-22"
+      )
       .expect(200)
       .then(({ body }) => {
         expect(body.simchas.length).toBe(1);
