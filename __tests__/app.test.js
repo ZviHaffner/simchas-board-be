@@ -42,6 +42,27 @@ describe("/api", () => {
   });
 });
 
+describe("/api/users", () => {
+  test("GET 200: Responds with all users", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.users).toHaveLength(3);
+        body.users.forEach((simcha) => {
+          expect(simcha).toMatchObject({
+            id: expect.any(Number),
+            firebase_uid: expect.any(String),
+            first_name: expect.any(String),
+            surname: expect.any(String),
+            email: expect.any(String),
+            created_at: expect.any(String),
+          });
+        });
+      });
+  });
+});
+
 describe("/api/simchas", () => {
   test("GET 200: Responds with all simchas", () => {
     return request(app)
