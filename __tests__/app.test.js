@@ -84,6 +84,41 @@ describe("/api/simchas", () => {
   });
 });
 
+describe("/api/users/:username", () => {
+  test("GET 200: Responds with specified user", () => {
+    return request(app)
+      .get("/api/users/1")
+      .expect(200)
+      .then(({ body }) => {
+        const user = body.user;
+        expect(user).toMatchObject({
+          id: 1,
+          firebase_uid: "uid_1",
+          first_name: "Akiva",
+          surname: "Babad",
+          email: "akiva.babad@example.com",
+        });
+        expect(new Date(user.created_at)).toBeDate();
+      });
+  });
+  test("GET 404: Responds with error when passed a non-existent username", () => {
+    return request(app)
+      .get("/api/users/99999999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("No user found for ID: 99999999");
+      });
+  });
+  test("GET 400: Responds with error when passed an ID that is not a number", () => {
+    return request(app)
+      .get("/api/users/NaN")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+});
+
 describe("/api/simchas/:id/details", () => {
   test("GET 200: Responds with correct simcha", () => {
     return request(app)
