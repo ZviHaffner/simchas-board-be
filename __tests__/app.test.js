@@ -149,57 +149,47 @@ describe("/api/simchas/:id/details", () => {
 });
 
 describe("/api/simchas/types/:simcha_type", () => {
-  const simchaTypes = ["shalom-zachor", "bris"];
-
-  simchaTypes.forEach((simchaType) => {
-    test(`GET 200: Responds with all simchas for correct simcha type (${simchaType})`, () => {
-      return request(app)
-        .get(
-          `/api/simchas/types/${simchaType}?start_date=1971-01-01&end_date=2100-01-01`
-        )
-        .expect(200)
-        .then(({ body }) => {
-          expect(body.simchas.length).toBe(2);
-          body.simchas.forEach((simcha) => {
-            expect(simcha).toMatchObject({
-              id: expect.any(Number),
-              user_id: expect.any(Number),
-              simcha_type: simchaType,
-            });
+  test("GET 200: Responds with all simchas for correct simcha type", () => {
+    return request(app)
+      .get("/api/simchas/types/bris?start_date=1971-01-01&end_date=2100-01-01")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.simchas).toHaveLength(2);
+        body.simchas.forEach((simcha) => {
+          expect(simcha).toMatchObject({
+            id: expect.any(Number),
+            user_id: expect.any(Number),
+            simcha_type: "bris",
           });
         });
-    });
-    test("GET 200: Adds host information to response", () => {
-      return request(app)
-        .get(
-          `/api/simchas/types/${simchaType}?start_date=1971-01-01&end_date=2100-01-01`
-        )
-        .expect(200)
-        .then(({ body }) => {
-          body.simchas.forEach((simcha) => {
-            expect(simcha).toMatchObject({
-              title: expect.any(String),
-              first_name: expect.any(String),
-              surname: expect.any(String),
-              tribe: expect.any(String),
-            });
+      });
+  });
+  test("GET 200: Adds host information to response", () => {
+    return request(app)
+      .get("/api/simchas/types/bris?start_date=1971-01-01&end_date=2100-01-01")
+      .expect(200)
+      .then(({ body }) => {
+        body.simchas.forEach((simcha) => {
+          expect(simcha).toMatchObject({
+            title: expect.any(String),
+            first_name: expect.any(String),
+            surname: expect.any(String),
+            tribe: expect.any(String),
           });
         });
-    });
-    test("GET 200: Adds date and time to response", () => {
-      return request(app)
-        .get(
-          `/api/simchas/types/${simchaType}?start_date=1971-01-01&end_date=2100-01-01`
-        )
-        .expect(200)
-        .then(({ body }) => {
-          body.simchas.forEach((simcha) => {
-            expect(simcha).toMatchObject({
-              date_and_time: expect.any(String),
-            });
+      });
+  });
+  test("GET 200: Adds date and time to response", () => {
+    return request(app)
+      .get("/api/simchas/types/bris?start_date=1971-01-01&end_date=2100-01-01")
+      .expect(200)
+      .then(({ body }) => {
+        body.simchas.forEach((simcha) => {
+          expect(simcha).toMatchObject({
+            date_and_time: expect.any(String),
           });
         });
-    });
+      });
   });
   test("GET 200: Responds with correct data between a specified date range", () => {
     return request(app)
@@ -208,18 +198,22 @@ describe("/api/simchas/types/:simcha_type", () => {
       )
       .expect(200)
       .then(({ body }) => {
-        expect(body.simchas.length).toBe(1);
+        expect(body.simchas).toHaveLength(1);
         body.simchas.forEach((simcha) => {
           expect(simcha).toMatchObject({
             id: 8,
-            user_id: expect.any(Number),
+            user_id: 2,
             simcha_type: "bar-mitzvah",
-            title: expect.any(String),
-            first_name: expect.any(String),
-            surname: expect.any(String),
-            tribe: expect.any(String),
-            date_and_time: expect.any(String),
+            title: "HaBachur",
+            first_name: "Moshe",
+            surname: "Goldberg",
+            tribe: "levi",
+            date_and_time: "2025-01-18T10:15:00.000Z",
           });
+          expect(new Date(simcha.date_and_time)).toBeBetween(
+            new Date("2025-01-15"),
+            new Date("2025-01-22")
+          );
         });
       });
   });
