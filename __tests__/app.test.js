@@ -84,7 +84,7 @@ describe("/api/simchas", () => {
   });
 });
 
-describe.only("/api/simchas", () => {
+describe("/api/simchas", () => {
   test("POST 201: Adds simcha and responds with the posted simcha", () => {
     const newSimcha = {
       user_id: 2,
