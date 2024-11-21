@@ -2,6 +2,7 @@ const {
   fetchSimchasByTypeWithHostAndDate,
   fetchAllSimchas,
   fetchCompleteSimchaById,
+  insertSimcha,
 } = require("../models/simchas.models");
 
 exports.getAllSimchas = (req, res, next) => {
@@ -27,6 +28,15 @@ exports.getSimchasByTypeWithHostAndDate = (req, res, next) => {
   fetchSimchasByTypeWithHostAndDate(simcha_type, start_date, end_date)
     .then((simchas) => {
       res.status(200).send({ simchas });
+    })
+    .catch(next);
+};
+
+exports.addSimcha = (req, res, next) => {
+  const newSimcha = req.body;
+  insertSimcha(newSimcha)
+    .then((simcha) => {
+      res.status(201).send({ simcha });
     })
     .catch(next);
 };

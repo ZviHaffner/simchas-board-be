@@ -84,6 +84,56 @@ describe("/api/simchas", () => {
   });
 });
 
+describe("/api/simchas", () => {
+  test("POST 201: Adds simcha and responds with the posted simcha", () => {
+    const newSimcha = {
+      user_id: 2,
+      simcha_type: "wedding",
+      notes: "Huge celebration!",
+    };
+    return request(app)
+      .post("/api/simchas")
+      .send(newSimcha)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.simcha).toEqual({
+          id: expect.any(Number),
+          user_id: 2,
+          simcha_type: "wedding",
+          notes: "Huge celebration!",
+        });
+      });
+  });
+  test("POST 404: Responds with error when posted by a non existent user_id", () => {
+    const newSimcha = {
+      user_id: 99999999,
+      simcha_type: "wedding",
+      notes: "Huge celebration!",
+    };
+    return request(app)
+      .post("/api/simchas")
+      .send(newSimcha)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Not Found");
+      });
+  });
+  test("POST 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+    const newSimcha = {
+      user_id: 2,
+      simcha_type: null,
+      notes: "Huge celebration!",
+    };
+    return request(app)
+      .post("/api/simchas")
+      .send(newSimcha)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+});
+
 describe("/api/users/:username", () => {
   test("GET 200: Responds with specified user", () => {
     return request(app)
