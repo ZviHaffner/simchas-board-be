@@ -79,3 +79,12 @@ exports.fetchSimchasByTypeWithHostAndDate = (
       return simchas;
     });
 };
+
+exports.insertSimcha = ({ user_id, simcha_type, notes }) => {
+  return db
+    .query(
+      "INSERT INTO simchas (user_id, simcha_type, notes) VALUES ($1, $2, $3) RETURNING *;",
+      [user_id, simcha_type, notes]
+    )
+    .then(({ rows }) => rows[0]);
+};

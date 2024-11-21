@@ -3,9 +3,10 @@ const {
   getSimchasByTypeWithHostAndDate,
   getAllSimchas,
   getCompleteSimchaById,
+  addSimcha,
 } = require("../controllers/simchas.controllers");
 
-simchasRouter.route("/").get(getAllSimchas);
+simchasRouter.route("/").get(getAllSimchas).post(addSimcha);
 
 simchasRouter.route("/:id/details").get(getCompleteSimchaById);
 
