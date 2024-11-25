@@ -134,7 +134,7 @@ describe("/api/simchas", () => {
   });
 });
 
-describe.only("/api/sig-persons", () => {
+describe("/api/sig-persons", () => {
   test("POST 201: Adds a significant person and responds with the posted person", () => {
     const newSigPerson = {
       simcha_id: 6,
