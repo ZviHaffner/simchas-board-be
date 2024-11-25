@@ -134,6 +134,95 @@ describe("/api/simchas", () => {
   });
 });
 
+describe.only("/api/sig-persons", () => {
+  test("POST 201: Adds a significant person and responds with the posted person", () => {
+    const newSigPerson = {
+      simcha_id: 6,
+      person_type: "relative",
+      title: "Reb",
+      first_name: "Benzy",
+      surname: "Goldman",
+      tribe: "yisrael",
+      city_of_residence: "Manchester",
+      country_of_residence: "UK",
+      relationship_type: "grandfather",
+      relation_of: "host",
+    };
+    return request(app)
+      .post("/api/sig-persons")
+      .send(newSigPerson)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.sigPerson).toEqual({
+          id: expect.any(Number),
+          simcha_id: 6,
+          person_type: "relative",
+          title: "Reb",
+          first_name: "Benzy",
+          surname: "Goldman",
+          tribe: "yisrael",
+          city_of_residence: "Manchester",
+          country_of_residence: "UK",
+          relationship_type: "grandfather",
+          relation_of: "host",
+        });
+      });
+  });
+  test("POST 404: Responds with error when posted by a non existent user_id", () => {
+    const newSigPerson = {
+      simcha_id: 99999999,
+      person_type: "relative",
+      title: "Reb",
+      first_name: "Benzy",
+      surname: "Goldman",
+      tribe: "yisrael",
+      city_of_residence: "Manchester",
+      country_of_residence: "UK",
+      relationship_type: "grandfather",
+      relation_of: "host",
+    };
+    return request(app)
+      .post("/api/sig-persons")
+      .send(newSigPerson)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Not Found");
+      });
+  });
+  test("POST 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+    const newSigPerson = {
+      simcha_id: 6,
+      person_type: "relative",
+      title: "Reb",
+      first_name: "Benzy",
+      surname: "Goldman",
+      tribe: "yisrael",
+      city_of_residence: "Manchester",
+      country_of_residence: "UK",
+      relationship_type: "grandfather",
+      relation_of: "host",
+    };
+
+    const cases = [
+      { ...newSigPerson, simcha_id: "six" },
+      { ...newSigPerson, person_type: "unrelated" },
+      { ...newSigPerson, first_name: undefined },
+    ];
+
+    const requests = cases.map((body) =>
+      request(app)
+        .post("/api/sig-persons")
+        .send(body)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toEqual("Bad Request");
+        })
+    );
+
+    return Promise.all(requests);
+  });
+});
+
 describe("/api/users/:username", () => {
   test("GET 200: Responds with specified user", () => {
     return request(app)
