@@ -223,6 +223,95 @@ describe("/api/sig-persons", () => {
   });
 });
 
+describe("/api/events", () => {
+  test("POST 201: Adds an event and responds with the posted event", () => {
+    const newEvent = {
+      simcha_id: 8,
+      title: "Tefillin Laying",
+      date_and_time: "2025-01-15T07:15:00Z",
+      end_time: "2025-01-15T08:15:00Z",
+      location_name: "The Roumainishe Shul",
+      address_first_line: "2 Vine Street",
+      area: "Salford",
+      city_of_event: "Manchester",
+      country_of_event: "UK",
+      men_only: true,
+    };
+    return request(app)
+      .post("/api/events")
+      .send(newEvent)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.event).toMatchObject({
+          id: expect.any(Number),
+          simcha_id: 8,
+          title: "Tefillin Laying",
+          location_name: "The Roumainishe Shul",
+          address_first_line: "2 Vine Street",
+          area: "Salford",
+          city_of_event: "Manchester",
+          country_of_event: "UK",
+          men_only: true,
+        });
+        expect(body.event.date_and_time).toBeDateString();
+        expect(body.event.end_time).toBeDateString();
+      });
+  });
+  test("POST 404: Responds with error when posted by a non existent user_id", () => {
+    const newEvent = {
+      simcha_id: 99999999,
+      title: "Tefillin Laying",
+      date_and_time: "2025-01-15T07:15:00Z",
+      end_time: "2025-01-15T08:15:00Z",
+      location_name: "The Roumainishe Shul",
+      address_first_line: "2 Vine Street",
+      area: "Salford",
+      city_of_event: "Manchester",
+      country_of_event: "UK",
+      men_only: true,
+    };
+    return request(app)
+      .post("/api/events")
+      .send(newEvent)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Not Found");
+      });
+  });
+  test("POST 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+    const newEvent = {
+      simcha_id: 8,
+      title: "Tefillin Laying",
+      date_and_time: "2025-01-15T07:15:00Z",
+      end_time: "2025-01-15T08:15:00Z",
+      location_name: "The Roumainishe Shul",
+      address_first_line: "2 Vine Street",
+      area: "Salford",
+      city_of_event: "Manchester",
+      country_of_event: "UK",
+      men_only: true,
+    };
+
+    const cases = [
+      { ...newEvent, simcha_id: "eight" },
+      { ...newEvent, men_only: 'maybe' },
+      { ...newEvent, location_name: undefined },
+    ];
+
+    const requests = cases.map((body) =>
+      request(app)
+        .post("/api/events")
+        .send(body)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toEqual("Bad Request");
+        })
+    );
+
+    return Promise.all(requests);
+  });
+});
+
 describe("/api/users/:username", () => {
   test("GET 200: Responds with specified user", () => {
     return request(app)
