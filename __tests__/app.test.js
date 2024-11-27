@@ -312,7 +312,7 @@ describe("/api/events", () => {
   });
 });
 
-describe.only("/api/users", () => {
+describe("/api/users", () => {
   test("POST 201: Adds a user and responds with the posted user", () => {
     const newUser = {
       firebase_uid: "uid_99",
