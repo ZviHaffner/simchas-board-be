@@ -168,7 +168,7 @@ describe("/api/sig-persons", () => {
         });
       });
   });
-  test("POST 404: Responds with error when posted by a non existent user_id", () => {
+  test("POST 404: Responds with error when posted by a non existent simcha_id", () => {
     const newSigPerson = {
       simcha_id: 99999999,
       person_type: "relative",
@@ -257,7 +257,7 @@ describe("/api/events", () => {
         expect(body.event.end_time).toBeDateString();
       });
   });
-  test("POST 404: Responds with error when posted by a non existent user_id", () => {
+  test("POST 404: Responds with error when posted by a non existent simcha_id", () => {
     const newEvent = {
       simcha_id: 99999999,
       title: "Tefillin Laying",
@@ -294,7 +294,7 @@ describe("/api/events", () => {
 
     const cases = [
       { ...newEvent, simcha_id: "eight" },
-      { ...newEvent, men_only: 'maybe' },
+      { ...newEvent, men_only: "maybe" },
       { ...newEvent, location_name: undefined },
     ];
 
@@ -309,6 +309,46 @@ describe("/api/events", () => {
     );
 
     return Promise.all(requests);
+  });
+});
+
+describe.only("/api/users", () => {
+  test("POST 201: Adds a user and responds with the posted user", () => {
+    const newUser = {
+      firebase_uid: "uid_99",
+      first_name: "Chaim",
+      surname: "Harris",
+      email: "chaimharris@email.com",
+    };
+    return request(app)
+      .post("/api/users")
+      .send(newUser)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.user).toMatchObject({
+          id: expect.any(Number),
+          firebase_uid: "uid_99",
+          first_name: "Chaim",
+          surname: "Harris",
+          email: "chaimharris@email.com",
+        });
+        expect(new Date(body.user.created_at)).toBeDate();
+      });
+  });
+  test("POST 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+    const newUser = {
+      firebase_uid: "uid_99",
+      first_name: "Chaim",
+      surname: "Harris",
+      email: null,
+    };
+    return request(app)
+    .post("/api/users")
+    .send(newUser)
+    .expect(400)
+    .then(({ body }) => {
+      expect(body.msg).toEqual("Bad Request");
+    });
   });
 });
 
