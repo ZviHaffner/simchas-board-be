@@ -18,3 +18,19 @@ exports.fetchUserById = (id) => {
       return user;
     });
 };
+
+exports.insertUser = ({ firebase_uid, first_name, surname, email }) => {
+  return db
+    .query(
+      `INSERT INTO users (
+          firebase_uid,
+          first_name,
+          surname,
+          email
+      ) VALUES 
+          ($1, $2, $3, $4) 
+      RETURNING *;`,
+      [firebase_uid, first_name, surname, email]
+    )
+    .then(({ rows }) => rows[0]);
+};
