@@ -1,4 +1,10 @@
-const { fetchAllUsers, fetchUserById, insertUser } = require("../models/users.models");
+const {
+  fetchAllUsers,
+  fetchUserById,
+  insertUser,
+  updateUser,
+  updateUserById,
+} = require("../models/users.models");
 
 exports.getAllUsers = (req, res) => {
   fetchAllUsers().then(({ rows }) => {
@@ -20,6 +26,16 @@ exports.addUser = (req, res, next) => {
   insertUser(newUser)
     .then((user) => {
       res.status(201).send({ user });
+    })
+    .catch(next);
+};
+
+exports.patchUserById = (req, res, next) => {
+  const { id } = req.params;
+  const { column, value } = req.body;
+  updateUserById(id, column, value)
+    .then((updatedUser) => {
+      res.status(200).send({ updatedUser });
     })
     .catch(next);
 };
