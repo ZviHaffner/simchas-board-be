@@ -387,7 +387,7 @@ describe("/api/users/:id", () => {
   });
 });
 
-describe.only("/api/users/:id", () => {
+describe("/api/users/:id", () => {
   test("PATCH 200: Responds with updated version of the correct user", () => {
     const update = { column: "first_name", value: "Joseph" };
     return request(app)
