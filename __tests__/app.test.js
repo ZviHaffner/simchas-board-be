@@ -343,16 +343,16 @@ describe("/api/users", () => {
       email: null,
     };
     return request(app)
-    .post("/api/users")
-    .send(newUser)
-    .expect(400)
-    .then(({ body }) => {
-      expect(body.msg).toEqual("Bad Request");
-    });
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
   });
 });
 
-describe("/api/users/:username", () => {
+describe("/api/users/:id", () => {
   test("GET 200: Responds with specified user", () => {
     return request(app)
       .get("/api/users/1")
@@ -380,6 +380,66 @@ describe("/api/users/:username", () => {
   test("GET 400: Responds with error when passed an ID that is not a number", () => {
     return request(app)
       .get("/api/users/NaN")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+});
+
+describe.only("/api/users/:id", () => {
+  test("PATCH 200: Responds with updated version of the correct user", () => {
+    const update = { column: "first_name", value: "Joseph" };
+    return request(app)
+      .patch("/api/users/3")
+      .send(update)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.updatedUser).toMatchObject({
+          id: 3,
+          firebase_uid: "uid_3",
+          first_name: "Joseph",
+          surname: "Dubiner",
+          email: "yos.dubiner@example.com",
+        });
+        expect(new Date(body.updatedUser.created_at)).toBeDate();
+      });
+  });
+  test("PATCH 400: Responds with error when an empty object is posted", () => {
+    const update = {};
+    return request(app)
+      .patch("/api/users/1")
+      .send(update)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+  test("PATCH 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+    const update = { column: "first_name" };
+    return request(app)
+      .patch("/api/users/3")
+      .send(update)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+  test("PATCH 404: Responds with error when passed a non-existent ID", () => {
+    const update = { column: "first_name", value: "Joseph" };
+    return request(app)
+      .patch("/api/users/9999999")
+      .send(update)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("No user found for id: 9999999");
+      });
+  });
+  test("PATCH 400: Responds with error when passed an ID that is not a number", () => {
+    const update = { column: "first_name", value: "Joseph" };
+    return request(app)
+      .patch("/api/users/NaN")
+      .send(update)
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toEqual("Bad Request");
