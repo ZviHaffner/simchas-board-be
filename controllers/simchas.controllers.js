@@ -3,6 +3,7 @@ const {
   fetchAllSimchas,
   fetchCompleteSimchaById,
   insertSimcha,
+  updateSimchaById,
 } = require("../models/simchas.models");
 
 exports.getAllSimchas = (req, res, next) => {
@@ -37,6 +38,16 @@ exports.addSimcha = (req, res, next) => {
   insertSimcha(newSimcha)
     .then((simcha) => {
       res.status(201).send({ simcha });
+    })
+    .catch(next);
+};
+
+exports.patchSimchaById = (req, res, next) => {
+  const { id } = req.params;
+  const { column, value } = req.body;
+  updateSimchaById(id, column, value)
+    .then((updatedSimcha) => {
+      res.status(200).send({ updatedSimcha });
     })
     .catch(next);
 };

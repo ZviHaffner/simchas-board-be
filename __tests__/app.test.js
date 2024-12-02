@@ -447,6 +447,91 @@ describe("/api/users/:id", () => {
   });
 });
 
+describe.only("/api/simchas/:id", () => {
+  test("PATCH 200: Responds with updated version of the correct simcha", () => {
+    const update = {
+      column: "notes",
+      value: "Please accept this as a personal invitation!",
+    };
+    return request(app)
+      .patch("/api/simchas/2")
+      .send(update)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.updatedSimcha).toMatchObject({
+          id: 2,
+          user_id: 2,
+          simcha_type: "shalom-zachor",
+          notes: "Please accept this as a personal invitation!",
+        });
+      });
+  });
+  test("PATCH 400: Responds with error when an empty object is posted", () => {
+    const update = {};
+    return request(app)
+      .patch("/api/simchas/1")
+      .send(update)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+  test("PATCH 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+    const update = { column: "notes" };
+    return request(app)
+      .patch("/api/simchas/3")
+      .send(update)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+  test("PATCH 404: Responds with error when passed a non-existent ID", () => {
+    const update = {
+      column: "notes",
+      value: "Please accept this as a personal invitation!",
+    };
+    return request(app)
+      .patch("/api/simchas/9999999")
+      .send(update)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("No simcha found for id: 9999999");
+      });
+  });
+  test("PATCH 400: Responds with error when passed an ID that is not a number", () => {
+    const update = {
+      column: "notes",
+      value: "Please accept this as a personal invitation!",
+    };
+    return request(app)
+      .patch("/api/simchas/NaN")
+      .send(update)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+  test("PATCH 400: Responds with error when an invalid column is posted e.g. non existent / restricted", () => {
+    const cases = [
+      { column: "non_existent", value: "valuable" },
+      { column: "id", value: 666 },
+    ];
+
+    const requests = cases.map((update) =>
+      request(app)
+        .patch("/api/simchas/3")
+        .send(update)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toEqual("Invalid Column");
+        })
+    );
+
+    return Promise.all(requests);
+  });
+});
+
 describe("/api/simchas/:id/details", () => {
   test("GET 200: Responds with correct simcha", () => {
     return request(app)

@@ -88,3 +88,39 @@ exports.insertSimcha = ({ user_id, simcha_type, notes }) => {
     )
     .then(({ rows }) => rows[0]);
 };
+
+exports.updateSimchaById = (id, column, value) => {
+  let queryString;
+
+  const validColumns = ["simcha_type", "notes"];
+
+  if (!id || !column || !value) {
+    return Promise.reject({
+      status: 400,
+      msg: "Bad Request",
+    });
+  } else if (!validColumns.includes(column)) {
+    return Promise.reject({
+      status: 400,
+      msg: "Invalid Column",
+    });
+  } else {
+    queryString = `
+      UPDATE simchas
+      SET
+        ${column} = $2
+      WHERE id = $1
+      RETURNING *;`;
+  }
+
+  return db.query(queryString, [id, value]).then(({ rows }) => {
+    const updatedSimcha = rows[0];
+    if (!updatedSimcha) {
+      return Promise.reject({
+        status: 404,
+        msg: `No simcha found for id: ${id}`,
+      });
+    }
+    return updatedSimcha;
+  });
+};
