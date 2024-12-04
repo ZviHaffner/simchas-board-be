@@ -1,6 +1,8 @@
 const eventsRouter = require("express").Router();
-const { addEvent } = require("../controllers/events.controllers");
+const { addEvent, patchEventById } = require("../controllers/events.controllers");
 
 eventsRouter.route("/").post(addEvent);
+
+eventsRouter.route("/:id").patch(patchEventById);
 
 module.exports = eventsRouter;

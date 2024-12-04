@@ -43,3 +43,47 @@ exports.insertEvent = ({
     )
     .then(({ rows }) => rows[0]);
 };
+
+exports.updateEventById = (id, column, value) => {
+  let queryString;
+
+  const validColumns = [
+    "title",
+    "location_name",
+    "address_first_line",
+    "area",
+    "city_of_event",
+    "country_of_event",
+    "men_only",
+  ];
+
+  if (!id || !column || !value) {
+    return Promise.reject({
+      status: 400,
+      msg: "Bad Request",
+    });
+  } else if (!validColumns.includes(column)) {
+    return Promise.reject({
+      status: 400,
+      msg: "Invalid Column",
+    });
+  } else {
+    queryString = `
+      UPDATE events
+      SET
+        ${column} = $2
+      WHERE id = $1
+      RETURNING *;`;
+  }
+
+  return db.query(queryString, [id, value]).then(({ rows }) => {
+    const updatedEvent = rows[0];
+    if (!updatedEvent) {
+      return Promise.reject({
+        status: 404,
+        msg: `No event found for id: ${id}`,
+      });
+    }
+    return updatedEvent;
+  });
+};

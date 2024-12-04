@@ -85,12 +85,12 @@ describe("POST /api/users", () => {
         });
         expect(new Date(body.user.created_at)).toBeDate();
       });
-    });
-    test("POST 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
-      const newUser = {
-        firebase_uid: "uid_99",
-        first_name: "Chaim",
-        surname: "Harris",
+  });
+  test("POST 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+    const newUser = {
+      firebase_uid: "uid_99",
+      first_name: "Chaim",
+      surname: "Harris",
       email: null,
     };
     return request(app)
@@ -425,7 +425,7 @@ describe("PATCH /api/simchas/:id", () => {
       value: "Please accept this as a personal invitation!",
     };
     return request(app)
-    .patch("/api/simchas/9999999")
+      .patch("/api/simchas/9999999")
       .send(update)
       .expect(404)
       .then(({ body }) => {
@@ -722,7 +722,7 @@ describe("PATCH /api/sig-persons/:id", () => {
   });
 });
 
-describe("/api/events", () => {
+describe("POST /api/events", () => {
   test("POST 201: Adds an event and responds with the posted event", () => {
     const newEvent = {
       simcha_id: 8,
@@ -804,6 +804,89 @@ describe("/api/events", () => {
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).toEqual("Bad Request");
+        })
+    );
+
+    return Promise.all(requests);
+  });
+});
+
+describe("PATCH /api/events/:id", () => {
+  test("PATCH 200: Responds with updated version of the correct event", () => {
+    const update = { column: "location_name", value: "Beis Yisrael" };
+    return request(app)
+      .patch("/api/events/7")
+      .send(update)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.updatedEvent).toMatchObject({
+          id: 7,
+          simcha_id: 7,
+          title: "Aliyah LeTorah",
+          location_name: "Beis Yisrael",
+          address_first_line: "104 Oak Avenue",
+          area: "Salford",
+          city_of_event: "Salford",
+          country_of_event: "UK",
+          men_only: false,
+          end_time: expect.toBeOneOf([expect.any(String), null]),
+        });
+        expect(body.updatedEvent.date_and_time).toBeDateString();
+      });
+  });
+  test("PATCH 400: Responds with error when an empty object is posted", () => {
+    const update = {};
+    return request(app)
+      .patch("/api/events/1")
+      .send(update)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+  test("PATCH 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+    const update = { column: "end_time" };
+    return request(app)
+      .patch("/api/events/3")
+      .send(update)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+  test("PATCH 404: Responds with error when passed a non-existent ID", () => {
+    const update = { column: "location_name", value: "Beis Yisrael" };
+    return request(app)
+      .patch("/api/events/9999999")
+      .send(update)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("No event found for id: 9999999");
+      });
+  });
+  test("PATCH 400: Responds with error when passed an ID that is not a number", () => {
+    const update = { column: "location_name", value: "Beis Yisrael" };
+    return request(app)
+      .patch("/api/events/NaN")
+      .send(update)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+  test("PATCH 400: Responds with error when an invalid column is posted e.g. non existent / restricted", () => {
+    const cases = [
+      { column: "non_existent", value: "valuable" },
+      { column: "id", value: 666 },
+    ];
+
+    const requests = cases.map((update) =>
+      request(app)
+        .patch("/api/events/3")
+        .send(update)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toEqual("Invalid Column");
         })
     );
 
