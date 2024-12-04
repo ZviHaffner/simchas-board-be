@@ -550,7 +550,7 @@ describe("GET /api/simchas/:id/details", () => {
   });
 });
 
-describe("/api/sig-persons", () => {
+describe("POST /api/sig-persons", () => {
   test("POST 201: Adds a significant person and responds with the posted person", () => {
     const newSigPerson = {
       simcha_id: 6,
@@ -632,6 +632,89 @@ describe("/api/sig-persons", () => {
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).toEqual("Bad Request");
+        })
+    );
+
+    return Promise.all(requests);
+  });
+});
+
+describe("PATCH /api/sig-persons/:id", () => {
+  test("PATCH 200: Responds with updated version of the correct sig person", () => {
+    const update = { column: "first_name", value: "Naphtali" };
+    return request(app)
+      .patch("/api/sig-persons/11")
+      .send(update)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.updatedSigPerson).toEqual({
+          id: 11,
+          simcha_id: 4,
+          person_type: "relative",
+          title: "Reb",
+          first_name: "Naphtali",
+          surname: "Green",
+          tribe: "yisrael",
+          city_of_residence: "Leeds",
+          country_of_residence: "UK",
+          relationship_type: "father",
+          relation_of: "host",
+        });
+      });
+  });
+  test("PATCH 400: Responds with error when an empty object is posted", () => {
+    const update = {};
+    return request(app)
+      .patch("/api/sig-persons/1")
+      .send(update)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+  test("PATCH 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+    const update = { column: "first_name" };
+    return request(app)
+      .patch("/api/sig-persons/3")
+      .send(update)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+  test("PATCH 404: Responds with error when passed a non-existent ID", () => {
+    const update = { column: "first_name", value: "Joseph" };
+    return request(app)
+      .patch("/api/sig-persons/9999999")
+      .send(update)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("No person found for id: 9999999");
+      });
+  });
+  test("PATCH 400: Responds with error when passed an ID that is not a number", () => {
+    const update = { column: "first_name", value: "Joseph" };
+    return request(app)
+      .patch("/api/sig-persons/NaN")
+      .send(update)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+  test("PATCH 400: Responds with error when an invalid column is posted e.g. non existent / restricted", () => {
+    const cases = [
+      { column: "non_existent", value: "valuable" },
+      { column: "id", value: 666 },
+    ];
+
+    const requests = cases.map((update) =>
+      request(app)
+        .patch("/api/sig-persons/3")
+        .send(update)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toEqual("Invalid Column");
         })
     );
 
