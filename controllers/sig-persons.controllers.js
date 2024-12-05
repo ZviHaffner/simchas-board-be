@@ -1,4 +1,8 @@
-const { insertSigPerson, updateSigPersonById } = require("../models/sig-persons.models");
+const {
+  insertSigPerson,
+  updateSigPersonById,
+  deleteSigPersonByID,
+} = require("../models/sig-persons.models");
 
 exports.addSigPerson = (req, res, next) => {
   const newSigPerson = req.body;
@@ -15,6 +19,15 @@ exports.patchSigPersonById = (req, res, next) => {
   updateSigPersonById(id, column, value)
     .then((updatedSigPerson) => {
       res.status(200).send({ updatedSigPerson });
+    })
+    .catch(next);
+};
+
+exports.eraseSigPersonById = (req, res, next) => {
+  const { id } = req.params;
+  deleteSigPersonByID(id)
+    .then(() => {
+      res.sendStatus(204);
     })
     .catch(next);
 };

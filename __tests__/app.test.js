@@ -722,6 +722,28 @@ describe("PATCH /api/sig-persons/:id", () => {
   });
 });
 
+describe.only("DELETE /api/sig-persons/:id", () => {
+  test("204: Deletes a significant person specified by ID", () => {
+    return request(app).delete("/api/sig-persons/10").expect(204);
+  });
+  test("404: Responds with error when passed a non-existent ID", () => {
+    return request(app)
+      .delete("/api/sig-persons/99999999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("No person found for ID: 99999999");
+      });
+  });
+  test("400: Responds with error when passed an ID that is not a number", () => {
+    return request(app)
+      .delete("/api/sig-persons/NaN")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+});
+
 describe("POST /api/events", () => {
   test("201: Adds an event and responds with the posted event", () => {
     const newEvent = {
