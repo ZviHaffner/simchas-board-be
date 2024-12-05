@@ -4,6 +4,7 @@ const {
   fetchCompleteSimchaById,
   insertSimcha,
   updateSimchaById,
+  deleteSimchaByID,
 } = require("../models/simchas.models");
 
 exports.getAllSimchas = (req, res, next) => {
@@ -48,6 +49,15 @@ exports.patchSimchaById = (req, res, next) => {
   updateSimchaById(id, column, value)
     .then((updatedSimcha) => {
       res.status(200).send({ updatedSimcha });
+    })
+    .catch(next);
+};
+
+exports.eraseSimchaById = (req, res, next) => {
+  const { id } = req.params;
+  deleteSimchaByID(id)
+    .then(() => {
+      res.sendStatus(204);
     })
     .catch(next);
 };

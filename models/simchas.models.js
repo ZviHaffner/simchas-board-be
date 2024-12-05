@@ -124,3 +124,24 @@ exports.updateSimchaById = (id, column, value) => {
     return updatedSimcha;
   });
 };
+
+exports.deleteSimchaByID = (id) => {
+  return db
+    .query(
+      `
+      DELETE FROM simchas
+      WHERE id = $1
+      RETURNING *
+    `,
+      [id]
+    )
+    .then((result) => {
+      if (result.rowCount === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: `No simcha found for ID: ${id}`,
+        });
+      }
+      return result;
+    });
+};

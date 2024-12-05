@@ -5,11 +5,12 @@ const {
   getCompleteSimchaById,
   addSimcha,
   patchSimchaById,
+  eraseSimchaById,
 } = require("../controllers/simchas.controllers");
 
 simchasRouter.route("/").get(getAllSimchas).post(addSimcha);
 
-simchasRouter.route("/:id/").patch(patchSimchaById);
+simchasRouter.route("/:id").patch(patchSimchaById).delete(eraseSimchaById);
 
 simchasRouter.route("/:id/details").get(getCompleteSimchaById);
 

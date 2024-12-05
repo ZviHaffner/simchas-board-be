@@ -465,6 +465,29 @@ describe("PATCH /api/simchas/:id", () => {
   });
 });
 
+describe("DELETE /api/simchas/:id", () => {
+  test("204: Deletes a simcha specified by ID", () => {
+    return request(app).delete("/api/simchas/10").expect(204);
+  });
+  test("404: Responds with error when passed a non-existent ID", () => {
+    return request(app)
+      .delete("/api/simchas/99999999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("No simcha found for ID: 99999999");
+      });
+  });
+  test("400: Responds with error when passed an ID that is not a number", () => {
+    return request(app)
+      .delete("/api/simchas/NaN")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+});
+
+
 describe("GET /api/simchas/:id/details", () => {
   test("200: Responds with correct simcha", () => {
     return request(app)
@@ -722,7 +745,7 @@ describe("PATCH /api/sig-persons/:id", () => {
   });
 });
 
-describe.only("DELETE /api/sig-persons/:id", () => {
+describe("DELETE /api/sig-persons/:id", () => {
   test("204: Deletes a significant person specified by ID", () => {
     return request(app).delete("/api/sig-persons/10").expect(204);
   });
