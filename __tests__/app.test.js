@@ -216,7 +216,7 @@ describe("PATCH /api/users/:id", () => {
   });
 });
 
-describe.only("DELETE /api/users/:id", () => {
+describe("DELETE /api/users/:id", () => {
   test("204: Deletes a user specified by ID", () => {
     return request(app).delete("/api/users/1").expect(204);
   });
