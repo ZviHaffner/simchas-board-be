@@ -1,4 +1,4 @@
-const { insertEvent, updateEventById } = require("../models/events.models");
+const { insertEvent, updateEventById, deleteEventByID } = require("../models/events.models");
 
 exports.addEvent = (req, res, next) => {
   const newEvent = req.body;
@@ -17,4 +17,13 @@ exports.patchEventById = (req, res, next) => {
       res.status(200).send({ updatedEvent });
     })
     .catch(next);
+};
+
+exports.eraseEventById = (req, res, next) => {
+  const { id } = req.params;
+  deleteEventByID(id)
+  .then(() => {
+    res.sendStatus(204);
+  })
+  .catch(next)
 };

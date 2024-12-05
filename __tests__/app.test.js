@@ -893,3 +893,25 @@ describe("PATCH /api/events/:id", () => {
     return Promise.all(requests);
   });
 });
+
+describe("DELETE /api/events/:id", () => {
+  test("DELETE 204: Deletes event specified by ID", () => {
+    return request(app).delete("/api/events/10").expect(204);
+  });
+  test("DELETE 404: Responds with error when passed a non-existent ID", () => {
+    return request(app)
+      .delete("/api/events/99999999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("No event found for ID: 99999999");
+      });
+  });
+  test("DELETE 400: Responds with error when passed an ID that is not a number", () => {
+    return request(app)
+      .delete("/api/events/NaN")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+});
