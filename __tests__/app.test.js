@@ -13,7 +13,7 @@ afterAll(() => {
 });
 
 describe("GET /api", () => {
-  test("GET 200: Responds with all endpoints", () => {
+  test("200: Responds with all endpoints", () => {
     return request(app)
       .get("/api")
       .expect(200)
@@ -32,7 +32,7 @@ describe("GET /api", () => {
 });
 
 describe("GET /api/notARoute", () => {
-  test("GET 404", () => {
+  test("404", () => {
     return request(app)
       .get("/api/notARoute")
       .expect(404)
@@ -43,7 +43,7 @@ describe("GET /api/notARoute", () => {
 });
 
 describe("GET /api/users", () => {
-  test("GET 200: Responds with all users", () => {
+  test("200: Responds with all users", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
@@ -64,7 +64,7 @@ describe("GET /api/users", () => {
 });
 
 describe("POST /api/users", () => {
-  test("POST 201: Adds a user and responds with the posted user", () => {
+  test("201: Adds a user and responds with the posted user", () => {
     const newUser = {
       firebase_uid: "uid_99",
       first_name: "Chaim",
@@ -86,7 +86,7 @@ describe("POST /api/users", () => {
         expect(new Date(body.user.created_at)).toBeDate();
       });
   });
-  test("POST 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+  test("400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
     const newUser = {
       firebase_uid: "uid_99",
       first_name: "Chaim",
@@ -104,7 +104,7 @@ describe("POST /api/users", () => {
 });
 
 describe("GET /api/users/:id", () => {
-  test("GET 200: Responds with specified user", () => {
+  test("200: Responds with specified user", () => {
     return request(app)
       .get("/api/users/1")
       .expect(200)
@@ -120,7 +120,7 @@ describe("GET /api/users/:id", () => {
         expect(new Date(user.created_at)).toBeDate();
       });
   });
-  test("GET 404: Responds with error when passed a non-existent username", () => {
+  test("404: Responds with error when passed a non-existent username", () => {
     return request(app)
       .get("/api/users/99999999")
       .expect(404)
@@ -128,7 +128,7 @@ describe("GET /api/users/:id", () => {
         expect(body.msg).toEqual("No user found for ID: 99999999");
       });
   });
-  test("GET 400: Responds with error when passed an ID that is not a number", () => {
+  test("400: Responds with error when passed an ID that is not a number", () => {
     return request(app)
       .get("/api/users/NaN")
       .expect(400)
@@ -139,7 +139,7 @@ describe("GET /api/users/:id", () => {
 });
 
 describe("PATCH /api/users/:id", () => {
-  test("PATCH 200: Responds with updated version of the correct user", () => {
+  test("200: Responds with updated version of the correct user", () => {
     const update = { column: "first_name", value: "Joseph" };
     return request(app)
       .patch("/api/users/3")
@@ -156,7 +156,7 @@ describe("PATCH /api/users/:id", () => {
         expect(new Date(body.updatedUser.created_at)).toBeDate();
       });
   });
-  test("PATCH 400: Responds with error when an empty object is posted", () => {
+  test("400: Responds with error when an empty object is posted", () => {
     const update = {};
     return request(app)
       .patch("/api/users/1")
@@ -166,7 +166,7 @@ describe("PATCH /api/users/:id", () => {
         expect(body.msg).toEqual("Bad Request");
       });
   });
-  test("PATCH 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+  test("400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
     const update = { column: "first_name" };
     return request(app)
       .patch("/api/users/3")
@@ -176,7 +176,7 @@ describe("PATCH /api/users/:id", () => {
         expect(body.msg).toEqual("Bad Request");
       });
   });
-  test("PATCH 404: Responds with error when passed a non-existent ID", () => {
+  test("404: Responds with error when passed a non-existent ID", () => {
     const update = { column: "first_name", value: "Joseph" };
     return request(app)
       .patch("/api/users/9999999")
@@ -186,7 +186,7 @@ describe("PATCH /api/users/:id", () => {
         expect(body.msg).toEqual("No user found for id: 9999999");
       });
   });
-  test("PATCH 400: Responds with error when passed an ID that is not a number", () => {
+  test("400: Responds with error when passed an ID that is not a number", () => {
     const update = { column: "first_name", value: "Joseph" };
     return request(app)
       .patch("/api/users/NaN")
@@ -196,7 +196,7 @@ describe("PATCH /api/users/:id", () => {
         expect(body.msg).toEqual("Bad Request");
       });
   });
-  test("PATCH 400: Responds with error when an invalid column is posted e.g. non existent / restricted", () => {
+  test("400: Responds with error when an invalid column is posted e.g. non existent / restricted", () => {
     const cases = [
       { column: "non_existent", value: "valuable" },
       { column: "id", value: 666 },
@@ -217,7 +217,7 @@ describe("PATCH /api/users/:id", () => {
 });
 
 describe("GET /api/simchas", () => {
-  test("GET 200: Responds with all simchas", () => {
+  test("200: Responds with all simchas", () => {
     return request(app)
       .get("/api/simchas")
       .expect(200)
@@ -238,7 +238,7 @@ describe("GET /api/simchas", () => {
 });
 
 describe("POST /api/simchas", () => {
-  test("POST 201: Adds simcha and responds with the posted simcha", () => {
+  test("201: Adds simcha and responds with the posted simcha", () => {
     const newSimcha = {
       user_id: 2,
       simcha_type: "wedding",
@@ -257,7 +257,7 @@ describe("POST /api/simchas", () => {
         });
       });
   });
-  test("POST 404: Responds with error when posted by a non existent user_id", () => {
+  test("404: Responds with error when posted by a non existent user_id", () => {
     const newSimcha = {
       user_id: 99999999,
       simcha_type: "wedding",
@@ -271,7 +271,7 @@ describe("POST /api/simchas", () => {
         expect(body.msg).toEqual("Not Found");
       });
   });
-  test("POST 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+  test("400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
     const newSimcha = {
       user_id: 2,
       simcha_type: null,
@@ -288,7 +288,7 @@ describe("POST /api/simchas", () => {
 });
 
 describe("GET /api/simchas/types/:simcha_type", () => {
-  test("GET 200: Responds with all simchas for correct simcha type", () => {
+  test("200: Responds with all simchas for correct simcha type", () => {
     return request(app)
       .get("/api/simchas/types/bris?start_date=1971-01-01&end_date=2100-01-01")
       .expect(200)
@@ -303,7 +303,7 @@ describe("GET /api/simchas/types/:simcha_type", () => {
         });
       });
   });
-  test("GET 200: Adds host information to response", () => {
+  test("200: Adds host information to response", () => {
     return request(app)
       .get("/api/simchas/types/bris?start_date=1971-01-01&end_date=2100-01-01")
       .expect(200)
@@ -318,7 +318,7 @@ describe("GET /api/simchas/types/:simcha_type", () => {
         });
       });
   });
-  test("GET 200: Adds date and time to response", () => {
+  test("200: Adds date and time to response", () => {
     return request(app)
       .get("/api/simchas/types/bris?start_date=1971-01-01&end_date=2100-01-01")
       .expect(200)
@@ -330,7 +330,7 @@ describe("GET /api/simchas/types/:simcha_type", () => {
         });
       });
   });
-  test("GET 200: Responds with correct data between a specified date range", () => {
+  test("200: Responds with correct data between a specified date range", () => {
     return request(app)
       .get(
         "/api/simchas/types/bar-mitzvah?start_date=2025-01-15&end_date=2025-01-22"
@@ -356,7 +356,7 @@ describe("GET /api/simchas/types/:simcha_type", () => {
         });
       });
   });
-  test("GET 404: Responds with error when passed a non-existent simcha type", () => {
+  test("404: Responds with error when passed a non-existent simcha type", () => {
     return request(app)
       .get(
         "/api/simchas/types/not-a-simcha?start_date=1971-01-01&end_date=2100-01-01"
@@ -368,7 +368,7 @@ describe("GET /api/simchas/types/:simcha_type", () => {
         );
       });
   });
-  test("GET 400: Responds with error when passed a non valid date query", () => {
+  test("400: Responds with error when passed a non valid date query", () => {
     return request(app)
       .get(
         "/api/simchas/types/bar-mitzvah?start_date=SQLInjection&end_date=SQLInjection"
@@ -381,7 +381,7 @@ describe("GET /api/simchas/types/:simcha_type", () => {
 });
 
 describe("PATCH /api/simchas/:id", () => {
-  test("PATCH 200: Responds with updated version of the correct simcha", () => {
+  test("200: Responds with updated version of the correct simcha", () => {
     const update = {
       column: "notes",
       value: "Please accept this as a personal invitation!",
@@ -399,7 +399,7 @@ describe("PATCH /api/simchas/:id", () => {
         });
       });
   });
-  test("PATCH 400: Responds with error when an empty object is posted", () => {
+  test("400: Responds with error when an empty object is posted", () => {
     const update = {};
     return request(app)
       .patch("/api/simchas/1")
@@ -409,7 +409,7 @@ describe("PATCH /api/simchas/:id", () => {
         expect(body.msg).toEqual("Bad Request");
       });
   });
-  test("PATCH 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+  test("400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
     const update = { column: "notes" };
     return request(app)
       .patch("/api/simchas/3")
@@ -419,7 +419,7 @@ describe("PATCH /api/simchas/:id", () => {
         expect(body.msg).toEqual("Bad Request");
       });
   });
-  test("PATCH 404: Responds with error when passed a non-existent ID", () => {
+  test("404: Responds with error when passed a non-existent ID", () => {
     const update = {
       column: "notes",
       value: "Please accept this as a personal invitation!",
@@ -432,7 +432,7 @@ describe("PATCH /api/simchas/:id", () => {
         expect(body.msg).toEqual("No simcha found for id: 9999999");
       });
   });
-  test("PATCH 400: Responds with error when passed an ID that is not a number", () => {
+  test("400: Responds with error when passed an ID that is not a number", () => {
     const update = {
       column: "notes",
       value: "Please accept this as a personal invitation!",
@@ -445,7 +445,7 @@ describe("PATCH /api/simchas/:id", () => {
         expect(body.msg).toEqual("Bad Request");
       });
   });
-  test("PATCH 400: Responds with error when an invalid column is posted e.g. non existent / restricted", () => {
+  test("400: Responds with error when an invalid column is posted e.g. non existent / restricted", () => {
     const cases = [
       { column: "non_existent", value: "valuable" },
       { column: "id", value: 666 },
@@ -466,7 +466,7 @@ describe("PATCH /api/simchas/:id", () => {
 });
 
 describe("GET /api/simchas/:id/details", () => {
-  test("GET 200: Responds with correct simcha", () => {
+  test("200: Responds with correct simcha", () => {
     return request(app)
       .get("/api/simchas/10/details")
       .expect(200)
@@ -481,7 +481,7 @@ describe("GET /api/simchas/:id/details", () => {
         });
       });
   });
-  test("GET 200: Adds on all significant persons information", () => {
+  test("200: Adds on all significant persons information", () => {
     return request(app)
       .get("/api/simchas/10/details")
       .expect(200)
@@ -506,7 +506,7 @@ describe("GET /api/simchas/:id/details", () => {
         });
       });
   });
-  test("GET 200: Adds on all events information", () => {
+  test("200: Adds on all events information", () => {
     return request(app)
       .get("/api/simchas/10/details")
       .expect(200)
@@ -532,7 +532,7 @@ describe("GET /api/simchas/:id/details", () => {
         });
       });
   });
-  test("GET 404: Responds with error when passed a non-existent ID", () => {
+  test("404: Responds with error when passed a non-existent ID", () => {
     return request(app)
       .get("/api/simchas/99999999/details")
       .expect(404)
@@ -540,7 +540,7 @@ describe("GET /api/simchas/:id/details", () => {
         expect(body.msg).toEqual("No simcha found for id: 99999999");
       });
   });
-  test("GET 400: Responds with error when passed an ID that is not a number", () => {
+  test("400: Responds with error when passed an ID that is not a number", () => {
     return request(app)
       .get("/api/simchas/NaN/details")
       .expect(400)
@@ -551,7 +551,7 @@ describe("GET /api/simchas/:id/details", () => {
 });
 
 describe("POST /api/sig-persons", () => {
-  test("POST 201: Adds a significant person and responds with the posted person", () => {
+  test("201: Adds a significant person and responds with the posted person", () => {
     const newSigPerson = {
       simcha_id: 6,
       person_type: "relative",
@@ -584,7 +584,7 @@ describe("POST /api/sig-persons", () => {
         });
       });
   });
-  test("POST 404: Responds with error when posted by a non existent simcha_id", () => {
+  test("404: Responds with error when posted by a non existent simcha_id", () => {
     const newSigPerson = {
       simcha_id: 99999999,
       person_type: "relative",
@@ -605,7 +605,7 @@ describe("POST /api/sig-persons", () => {
         expect(body.msg).toEqual("Not Found");
       });
   });
-  test("POST 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+  test("400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
     const newSigPerson = {
       simcha_id: 6,
       person_type: "relative",
@@ -640,7 +640,7 @@ describe("POST /api/sig-persons", () => {
 });
 
 describe("PATCH /api/sig-persons/:id", () => {
-  test("PATCH 200: Responds with updated version of the correct sig person", () => {
+  test("200: Responds with updated version of the correct sig person", () => {
     const update = { column: "first_name", value: "Naphtali" };
     return request(app)
       .patch("/api/sig-persons/11")
@@ -662,7 +662,7 @@ describe("PATCH /api/sig-persons/:id", () => {
         });
       });
   });
-  test("PATCH 400: Responds with error when an empty object is posted", () => {
+  test("400: Responds with error when an empty object is posted", () => {
     const update = {};
     return request(app)
       .patch("/api/sig-persons/1")
@@ -672,7 +672,7 @@ describe("PATCH /api/sig-persons/:id", () => {
         expect(body.msg).toEqual("Bad Request");
       });
   });
-  test("PATCH 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+  test("400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
     const update = { column: "first_name" };
     return request(app)
       .patch("/api/sig-persons/3")
@@ -682,7 +682,7 @@ describe("PATCH /api/sig-persons/:id", () => {
         expect(body.msg).toEqual("Bad Request");
       });
   });
-  test("PATCH 404: Responds with error when passed a non-existent ID", () => {
+  test("404: Responds with error when passed a non-existent ID", () => {
     const update = { column: "first_name", value: "Joseph" };
     return request(app)
       .patch("/api/sig-persons/9999999")
@@ -692,7 +692,7 @@ describe("PATCH /api/sig-persons/:id", () => {
         expect(body.msg).toEqual("No person found for id: 9999999");
       });
   });
-  test("PATCH 400: Responds with error when passed an ID that is not a number", () => {
+  test("400: Responds with error when passed an ID that is not a number", () => {
     const update = { column: "first_name", value: "Joseph" };
     return request(app)
       .patch("/api/sig-persons/NaN")
@@ -702,7 +702,7 @@ describe("PATCH /api/sig-persons/:id", () => {
         expect(body.msg).toEqual("Bad Request");
       });
   });
-  test("PATCH 400: Responds with error when an invalid column is posted e.g. non existent / restricted", () => {
+  test("400: Responds with error when an invalid column is posted e.g. non existent / restricted", () => {
     const cases = [
       { column: "non_existent", value: "valuable" },
       { column: "id", value: 666 },
@@ -723,7 +723,7 @@ describe("PATCH /api/sig-persons/:id", () => {
 });
 
 describe("POST /api/events", () => {
-  test("POST 201: Adds an event and responds with the posted event", () => {
+  test("201: Adds an event and responds with the posted event", () => {
     const newEvent = {
       simcha_id: 8,
       title: "Tefillin Laying",
@@ -756,7 +756,7 @@ describe("POST /api/events", () => {
         expect(body.event.end_time).toBeDateString();
       });
   });
-  test("POST 404: Responds with error when posted by a non existent simcha_id", () => {
+  test("404: Responds with error when posted by a non existent simcha_id", () => {
     const newEvent = {
       simcha_id: 99999999,
       title: "Tefillin Laying",
@@ -777,7 +777,7 @@ describe("POST /api/events", () => {
         expect(body.msg).toEqual("Not Found");
       });
   });
-  test("POST 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+  test("400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
     const newEvent = {
       simcha_id: 8,
       title: "Tefillin Laying",
@@ -812,7 +812,7 @@ describe("POST /api/events", () => {
 });
 
 describe("PATCH /api/events/:id", () => {
-  test("PATCH 200: Responds with updated version of the correct event", () => {
+  test("200: Responds with updated version of the correct event", () => {
     const update = { column: "location_name", value: "Beis Yisrael" };
     return request(app)
       .patch("/api/events/7")
@@ -834,7 +834,7 @@ describe("PATCH /api/events/:id", () => {
         expect(body.updatedEvent.date_and_time).toBeDateString();
       });
   });
-  test("PATCH 400: Responds with error when an empty object is posted", () => {
+  test("400: Responds with error when an empty object is posted", () => {
     const update = {};
     return request(app)
       .patch("/api/events/1")
@@ -844,7 +844,7 @@ describe("PATCH /api/events/:id", () => {
         expect(body.msg).toEqual("Bad Request");
       });
   });
-  test("PATCH 400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
+  test("400: Responds with error when a bad object is posted e.g. a malformed body / missing required fields", () => {
     const update = { column: "end_time" };
     return request(app)
       .patch("/api/events/3")
@@ -854,7 +854,7 @@ describe("PATCH /api/events/:id", () => {
         expect(body.msg).toEqual("Bad Request");
       });
   });
-  test("PATCH 404: Responds with error when passed a non-existent ID", () => {
+  test("404: Responds with error when passed a non-existent ID", () => {
     const update = { column: "location_name", value: "Beis Yisrael" };
     return request(app)
       .patch("/api/events/9999999")
@@ -864,7 +864,7 @@ describe("PATCH /api/events/:id", () => {
         expect(body.msg).toEqual("No event found for id: 9999999");
       });
   });
-  test("PATCH 400: Responds with error when passed an ID that is not a number", () => {
+  test("400: Responds with error when passed an ID that is not a number", () => {
     const update = { column: "location_name", value: "Beis Yisrael" };
     return request(app)
       .patch("/api/events/NaN")
@@ -874,7 +874,7 @@ describe("PATCH /api/events/:id", () => {
         expect(body.msg).toEqual("Bad Request");
       });
   });
-  test("PATCH 400: Responds with error when an invalid column is posted e.g. non existent / restricted", () => {
+  test("400: Responds with error when an invalid column is posted e.g. non existent / restricted", () => {
     const cases = [
       { column: "non_existent", value: "valuable" },
       { column: "id", value: 666 },
@@ -895,10 +895,10 @@ describe("PATCH /api/events/:id", () => {
 });
 
 describe("DELETE /api/events/:id", () => {
-  test("DELETE 204: Deletes event specified by ID", () => {
+  test("204: Deletes event specified by ID", () => {
     return request(app).delete("/api/events/10").expect(204);
   });
-  test("DELETE 404: Responds with error when passed a non-existent ID", () => {
+  test("404: Responds with error when passed a non-existent ID", () => {
     return request(app)
       .delete("/api/events/99999999")
       .expect(404)
@@ -906,7 +906,7 @@ describe("DELETE /api/events/:id", () => {
         expect(body.msg).toEqual("No event found for ID: 99999999");
       });
   });
-  test("DELETE 400: Responds with error when passed an ID that is not a number", () => {
+  test("400: Responds with error when passed an ID that is not a number", () => {
     return request(app)
       .delete("/api/events/NaN")
       .expect(400)
