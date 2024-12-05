@@ -2,8 +2,8 @@ const {
   fetchAllUsers,
   fetchUserById,
   insertUser,
-  updateUser,
   updateUserById,
+  deleteUserByID,
 } = require("../models/users.models");
 
 exports.getAllUsers = (req, res) => {
@@ -36,6 +36,15 @@ exports.patchUserById = (req, res, next) => {
   updateUserById(id, column, value)
     .then((updatedUser) => {
       res.status(200).send({ updatedUser });
+    })
+    .catch(next);
+};
+
+exports.eraseUserById = (req, res, next) => {
+  const { id } = req.params;
+  deleteUserByID(id)
+    .then(() => {
+      res.sendStatus(204);
     })
     .catch(next);
 };

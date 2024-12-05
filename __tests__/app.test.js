@@ -216,6 +216,28 @@ describe("PATCH /api/users/:id", () => {
   });
 });
 
+describe("DELETE /api/users/:id", () => {
+  test("204: Deletes a user specified by ID", () => {
+    return request(app).delete("/api/users/1").expect(204);
+  });
+  test("404: Responds with error when passed a non-existent ID", () => {
+    return request(app)
+      .delete("/api/users/99999999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("No user found for ID: 99999999");
+      });
+  });
+  test("400: Responds with error when passed an ID that is not a number", () => {
+    return request(app)
+      .delete("/api/users/NaN")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+});
+
 describe("GET /api/simchas", () => {
   test("200: Responds with all simchas", () => {
     return request(app)
