@@ -87,3 +87,23 @@ exports.updateEventById = (id, column, value) => {
     return updatedEvent;
   });
 };
+
+exports.deleteEventByID = (id) => {
+  return db
+    .query(`
+      DELETE FROM events
+      WHERE id = $1
+      RETURNING *
+    `,
+      [id]
+    )
+    .then((result) => {
+      if (result.rowCount === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: `No event found for ID: ${id}`,
+        });
+      }
+      return result;
+    });
+};
