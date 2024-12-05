@@ -76,6 +76,12 @@
       }
     }
   },
+  "DELETE /api/users/:id": {
+    "description": "Deletes a user specified by ID. Does not serve up any content.",
+    "queries": [],
+    "reqBodyFormat": {},
+    "exampleResponse": {}
+  },
 
   "GET /api/simchas": {
     "description": "Serves up a json representation of an array of all simchas",
@@ -124,6 +130,12 @@
         "notes": "Please accept this as a personal invitation!"
       }
     }
+  },
+  "DELETE /api/simchas/:id": {
+    "description": "Deletes a simcha specified by ID. Does not serve up any content.",
+    "queries": [],
+    "reqBodyFormat": {},
+    "exampleResponse": {}
   },
   "GET /api/simchas/types/:simcha_type": {
     "description": "Serves up a json representation of all simchas (excluding notes) of a certain simcha type between two dates. Adds on host and date & time details",
@@ -239,6 +251,12 @@
       }
     }
   },
+  "DELETE /api/sig-persons/:id": {
+    "description": "Deletes a significant person specified by ID. Does not serve up any content.",
+    "queries": [],
+    "reqBodyFormat": {},
+    "exampleResponse": {}
+  },
 
   "POST /api/events": {
     "description": "Adds an event. Serves up a json representation of the new event.",
@@ -290,5 +308,11 @@
         "men_only": false
       }
     }
+  },
+  "DELETE /api/events/:id": {
+    "description": "Deletes an event specified by ID. Does not serve up any content.",
+    "queries": [],
+    "reqBodyFormat": {},
+    "exampleResponse": {}
   }
 }
