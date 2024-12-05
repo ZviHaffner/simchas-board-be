@@ -70,3 +70,24 @@ exports.updateUserById = (id, column, value) => {
     return updatedUser;
   });
 };
+
+exports.deleteUserByID = (id) => {
+  return db
+    .query(
+      `
+      DELETE FROM users
+      WHERE id = $1
+      RETURNING *
+    `,
+      [id]
+    )
+    .then((result) => {
+      if (result.rowCount === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: `No user found for ID: ${id}`,
+        });
+      }
+      return result;
+    });
+};
