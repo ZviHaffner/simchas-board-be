@@ -2,11 +2,22 @@
 
 ## URL to API
 
+`https://simchas-board-be.onrender.com/api/`
+
 ## Summary
 
-## Getting Started
+The Simchas Board backend provides a RESTful API for managing Jewish celebration (simcha) event data. It supports endpoints for creating, reading, updating, and deleting information about users, events and significant persons.
 
-### Prerequisites
+Features:
+- Event Management: Handle multiple event types, dates, times, and locations.
+- Significant Persons Management: Efficiently associate a host (Ba'al Simcha), bride, relatives, and attendees with specific events.
+- Database Integration: Built with PostgreSQL for structured and reliable data storage.
+- API Documentation: Clear endpoints for seamless integration with the frontend.
+
+More detailed information on each endpoint can be found at:
+`https://be-project-nc-news.onrender.com/api`
+
+## Getting Started
 
 ### Cloning the Repository
 
