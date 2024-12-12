@@ -8,7 +8,8 @@ const {
 } = require("../models/simchas.models");
 
 exports.getAllSimchas = (req, res, next) => {
-  fetchAllSimchas()
+  const { start_date, end_date } = req.query;
+  fetchAllSimchas(start_date, end_date)
     .then(({ rows }) => {
       res.status(200).send({ simchas: rows });
     })

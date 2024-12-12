@@ -257,6 +257,41 @@ describe("GET /api/simchas", () => {
         });
       });
   });
+  test("GET 200: accepts optional query of date range", () => {
+    return request(app)
+      .get("/api/simchas?start_date=2024-01-01&end_date=2025-01-01")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.simchas).toHaveLength(16);
+        body.simchas.forEach((simcha) => {
+          expect(simcha).toMatchObject({
+            id: expect.any(Number),
+            user_id: expect.any(Number),
+            simcha_type: expect.any(String),
+          });
+          expect(new Date(simcha.date_and_time)).toBeBetween(
+            new Date("2024-01-01"),
+            new Date("2025-01-01")
+          );
+        });
+      });
+  });
+  test("GET 400: Responds with error when queried with non valid dates", () => {
+    return request(app)
+      .get("/api/simchas?start_date=sqlInjection&end_date=sqlInjection")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Invalid Date(s)");
+      });
+  });
+  test("GET 400: Responds with error when queried with only one date", () => {
+    return request(app)
+      .get("/api/simchas?start_date=2024-01-01")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Query Must Include BOTH a Start and End Date");
+      });
+  });
 });
 
 describe("POST /api/simchas", () => {
