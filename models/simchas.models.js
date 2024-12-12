@@ -1,6 +1,33 @@
 const db = require("../db/connection");
 
-exports.fetchAllSimchas = () => {
+exports.fetchAllSimchas = (start_date, end_date) => {
+  if (start_date && end_date) {
+    if (
+      isNaN(new Date(start_date).getTime()) ||
+      isNaN(new Date(end_date).getTime())
+    ) {
+      return Promise.reject({
+        status: 400,
+        msg: "Invalid Date(s)",
+      });
+    }
+
+    return db.query(
+      `
+      SELECT simchas.*, events.date_and_time
+      FROM simchas
+      JOIN events ON simchas.id = events.simcha_id
+                  AND events.date_and_time BETWEEN $1 AND $2
+      `,
+      [start_date, end_date]
+    );
+  } else if (start_date || end_date) {
+    return Promise.reject({
+      status: 400,
+      msg: "Query Must Include BOTH a Start and End Date",
+    });
+  }
+
   return db.query("SELECT * FROM simchas");
 };
 
