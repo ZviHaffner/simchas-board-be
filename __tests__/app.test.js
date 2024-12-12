@@ -257,13 +257,12 @@ describe("GET /api/simchas", () => {
         });
       });
   });
-  test.only("GET 200: accepts optional query of date range", () => {
+  test("GET 200: accepts optional query of date range", () => {
     return request(app)
       .get("/api/simchas?start_date=2024-01-01&end_date=2025-01-01")
       .expect(200)
       .then(({ body }) => {
         expect(body.simchas).toHaveLength(16);
-        console.log(body.simchas)
         body.simchas.forEach((simcha) => {
           expect(simcha).toMatchObject({
             id: expect.any(Number),
